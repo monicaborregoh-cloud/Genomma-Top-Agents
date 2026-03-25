@@ -60,16 +60,20 @@ client = anthropic.Anthropic(api_key=st.secrets["ANTHROPIC_API_KEY"])
 if not st.session_state.initialized:
     with st.chat_message("assistant"):
         with st.spinner("Iniciando GLabRecruit..."):
-            response = client.messages.create(
-                model="claude-3-5-sonnet-20241022",
-                max_tokens=1024,
-                system=SYSTEM_PROMPT,
-                messages=[{"role": "user", "content": "Inicia sesion"}]
-            )
-            greeting = response.content[0].text
-            st.markdown(greeting)
-            st.session_state.messages.append({"role": "assistant", "content": greeting})
-            st.session_state.initialized = True
+            try:
+                response = client.messages.create(
+                    model="claude-3-5-sonnet-20241022",
+                    max_tokens=1024,
+                    system=SYSTEM_PROMPT,
+                    messages=[{"role": "user", "content": "Inicia sesion"}]
+                )
+                greeting = response.content[0].text
+                st.markdown(greeting)
+                st.session_state.messages.append({"role": "assistant", "content": greeting})
+                st.session_state.initialized = True
+            except Exception as e:
+                st.error(f"Error al iniciar: {str(e)}")
+                st.stop()
 
 for message in st.session_state.messages:
     with st.chat_message(message["role"]):
