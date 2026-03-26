@@ -62,7 +62,7 @@ if not st.session_state.initialized:
         with st.spinner("Iniciando GLabRecruit..."):
             try:
                 response = client.messages.create(
-                    model="claude-3-5-sonnet-20241022",
+                    model="claude-sonnet-4-6",
                     max_tokens=1024,
                     system=SYSTEM_PROMPT,
                     messages=[{"role": "user", "content": "Inicia sesion"}]
@@ -87,7 +87,7 @@ if prompt := st.chat_input("Escribe tu mensaje aqui..."):
         with st.spinner("Procesando..."):
             api_messages = [{"role": m["role"], "content": m["content"]} for m in st.session_state.messages]
             response = client.messages.create(
-                model="claude-3-5-sonnet-20241022",
+                model="claude-sonnet-4-6",
                 max_tokens=4096,
                 system=SYSTEM_PROMPT,
                 messages=api_messages
